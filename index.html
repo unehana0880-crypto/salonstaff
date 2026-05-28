@@ -3,235 +3,312 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Laurel Studio Daily Routine Checklist</title>
+<title>Laurel Studio — 대기실 루틴</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Sans+KR:wght@300;400;500;600&display=swap');
+  :root{--bg:#FAF9F6;--card:#fff;--border:#EBE8E2;--dark:#1C1917;--muted:#8A8278;--accent:#7c6fa0;--green:#3D7A52;--green-bg:#E8F5EE;--coral:#B85450;--coral-bg:#FBEAE9;--gold:#B8860B;--gold-bg:#FEF8E0;--guest:#4a40a0;--guest-bg:#EEEDF8;--close-bg:#FDF0E0;--close:#8A5A10;--tip-bg:#F8F6EF;--blue:#2A5FA8;--blue-bg:#E8F0FB;--season-summer:#2D8DB5;--season-summer-bg:#E6F4FA;--season-winter:#6B7FA0;--season-winter-bg:#EEF1F6}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background:#faf9f7;color:#1a1a1a;min-height:100vh;padding:2rem 1rem 4rem}
-  .w{max-width:640px;margin:0 auto}
-  .top{text-align:center;margin-bottom:2rem}
-  .brand{font-size:11px;letter-spacing:.2em;color:#999;margin-bottom:6px}
-  .title{font-size:22px;font-weight:600;color:#1a1a1a;margin-bottom:4px}
-  .date{font-size:13px;color:#888}
-  .prog-row{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem}
-  .pbar{flex:1;height:3px;background:#e8e6e1;border-radius:2px;overflow:hidden}
-  .pfill{height:100%;background:#7c6fa0;border-radius:2px;transition:width .3s}
-  .plabel{font-size:12px;color:#888;white-space:nowrap}
-  .reset-btn{font-size:11px;color:#888;background:none;border:1px solid #ddd;border-radius:6px;padding:4px 10px;cursor:pointer}
-  .reset-btn:hover{background:#f0ede8}
-  .phase{border-radius:14px;border:1px solid #e8e6e1;margin-bottom:1.4rem;overflow:hidden;background:#fff}
-  .phase-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;font-size:14px;font-weight:600}
-  .ph-open{background:#e8f5ee;color:#2d7a55}
-  .ph-guest{background:#eeedf8;color:#4a40a0}
-  .ph-close{background:#fdf0e0;color:#8a5a10}
-  .ph-time{font-size:12px;font-weight:400;opacity:.75}
-  .note{font-size:11px;color:#999;padding:6px 18px 8px;background:#faf9f7;border-bottom:1px solid #f0ede8}
-  .sec-hd{font-size:11px;font-weight:600;letter-spacing:.07em;color:#888;padding:9px 18px 6px;background:#faf9f7;border-top:1px solid #f0ede8;border-bottom:1px solid #f0ede8}
-  .item{display:flex;align-items:flex-start;gap:12px;padding:10px 18px;border-top:1px solid #f0ede8;background:#fff;cursor:pointer;transition:background .12s;-webkit-tap-highlight-color:transparent}
-  .item:hover{background:#faf9f7}
+  body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;padding:0 0 80px}
+  .w{max-width:520px;margin:0 auto;padding:0 16px}
+  .top{text-align:center;padding:28px 0 20px}
+  .brand{font-family:'Cormorant Garamond',serif;font-size:11px;letter-spacing:.25em;color:var(--muted);text-transform:uppercase}
+  .title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--dark);margin:4px 0}
+  .subtitle{font-size:12px;color:var(--muted);font-weight:400}
+  .date{font-size:12px;color:var(--muted);margin-top:6px}
+  .prog-bar{position:sticky;top:0;z-index:20;background:var(--bg);padding:10px 16px 8px;margin:0 -16px;border-bottom:1px solid var(--border)}
+  .prog-row{display:flex;align-items:center;gap:10px}
+  .pbar{flex:1;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+  .pfill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s}
+  .plabel{font-size:11px;color:var(--muted);white-space:nowrap}
+  .reset-btn{font-size:10px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:6px;padding:3px 10px;cursor:pointer;font-family:inherit}
+  .tab-row{display:flex;gap:6px;margin:14px 0 16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tab-btn{flex-shrink:0;padding:8px 16px;border:1.5px solid var(--border);border-radius:999px;background:var(--card);cursor:pointer;font-family:inherit;font-size:12px;font-weight:500;color:var(--muted);transition:all .15s}
+  .tab-btn.active{border-color:var(--accent);background:var(--accent);color:#fff}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block}
+  .phase{border-radius:14px;border:1px solid var(--border);margin-bottom:16px;overflow:hidden;background:var(--card)}
+  .phase-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-size:13px;font-weight:600}
+  .ph-open{background:var(--green-bg);color:var(--green)}
+  .ph-guest{background:var(--guest-bg);color:var(--guest)}
+  .ph-close{background:var(--close-bg);color:var(--close)}
+  .note{font-size:11px;color:var(--muted);padding:6px 16px 8px;background:var(--tip-bg);border-bottom:1px solid var(--border);line-height:1.6;font-style:italic}
+  .sec-hd{font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--muted);padding:8px 16px 6px;background:#FAF9F6;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .item{display:flex;align-items:flex-start;gap:12px;padding:10px 16px;border-top:1px solid #F5F3EE;background:var(--card);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .1s}
+  .item:first-child{border-top:none}
+  .item:active{background:#FAF9F6}
   .item.done .lbl{color:#bbb;text-decoration:line-through}
-  .item.done .sub{color:#ccc}
-  .cb{width:18px;height:18px;min-width:18px;border-radius:5px;border:1.5px solid #ccc;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;flex-shrink:0}
-  .item.done .cb{background:#7c6fa0;border-color:#7c6fa0}
+  .item.done .sub{color:#ddd}
+  .item.done .en-line{color:#ddd}
+  .item.done .pron{color:#ddd}
+  .cb{width:20px;height:20px;min-width:20px;border-radius:6px;border:1.5px solid #ccc;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .15s;flex-shrink:0}
+  .item.done .cb{background:var(--accent);border-color:var(--accent)}
   .ck{display:none}
   .item.done .ck{display:block}
-  .lbl{font-size:14px;color:#1a1a1a;line-height:1.5}
-  .sub{font-size:12px;color:#888;margin-top:3px;line-height:1.6}
-  .en{display:inline-block;font-size:11px;font-weight:500;background:#e8f0fb;color:#2a5fa8;border-radius:999px;padding:1px 8px;margin-left:4px}
-  .badge{display:inline-block;font-size:11px;font-weight:500;background:#fbeaf0;color:#a03060;border-radius:999px;padding:1px 8px;margin-left:4px}
-  .new{display:inline-block;font-size:10px;font-weight:600;background:#e8f5ee;color:#2d7a55;border-radius:999px;padding:1px 6px;margin-left:5px;vertical-align:middle}
+  .lbl{font-size:13px;color:var(--dark);line-height:1.55;font-weight:500}
+  .sub{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.65}
+  .en-line{font-size:11px;color:var(--blue);margin-top:4px;line-height:1.5;font-weight:400}
+  .pron{font-size:11px;color:#9B8FCB;margin-top:1px;line-height:1.5;font-style:italic}
+  .badge{display:inline-block;font-size:10px;font-weight:500;background:var(--coral-bg);color:var(--coral);border-radius:999px;padding:1px 8px;margin-left:4px}
+  .season-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;border-radius:999px;padding:2px 8px;margin-left:4px}
+  .st-summer{background:var(--season-summer-bg);color:var(--season-summer)}
+  .st-winter{background:var(--season-winter-bg);color:var(--season-winter)}
+  .talk-card{background:#FDFCF9;border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin:8px 16px 10px;line-height:1.7}
+  .talk-card .tc-label{font-size:10px;font-weight:600;letter-spacing:.06em;color:var(--accent);margin-bottom:6px;text-transform:uppercase}
+  .talk-card .tc-en{font-size:12px;color:var(--dark);font-weight:500}
+  .talk-card .tc-pron{font-size:11px;color:#9B8FCB;font-style:italic;margin-top:1px}
+  .talk-card .tc-ko{font-size:11px;color:var(--muted);margin-top:2px}
+  .talk-card .tc-divider{height:1px;background:var(--border);margin:8px 0}
+  .mind-card{background:#F8F6F0;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:10px 14px;margin:8px 16px 10px;font-size:11px;color:#6B5D3F;line-height:1.65}
+  .mind-card strong{color:var(--gold);font-weight:600}
+  .svg-ck{width:10px;height:8px}
 </style>
 </head>
 <body>
 <div class="w">
   <div class="top">
-    <div class="brand">LAUREL STUDIO</div>
-    <div class="title">오늘의 루틴</div>
+    <div class="brand">Laurel Studio</div>
+    <div class="title">대기실 루틴</div>
+    <div class="subtitle">다운 — Daily Routine Checklist</div>
     <div class="date" id="today-date"></div>
   </div>
 
-  <div class="prog-row">
-    <div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
-    <div class="plabel" id="pl">0 / 0 완료</div>
-    <button class="reset-btn" onclick="resetAll()">전체 초기화</button>
+  <div class="prog-bar">
+    <div class="prog-row">
+      <div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
+      <div class="plabel" id="pl">0 / 0</div>
+      <button class="reset-btn" onclick="resetAll()">초기화</button>
+    </div>
   </div>
 
-  <!-- ① OPEN 준비 -->
-  <div class="phase">
-    <div class="phase-hd ph-open">
-      <span>🌿 OPEN 준비</span>
-      <span class="ph-time">10:30 – 11:00</span>
-    </div>
-    <div class="note">* 손님 오시기 전까지 순서 상관없이 진행하시면 됩니다</div>
-
-    <div class="sec-hd">대기실</div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">메인 조명 1개 켜기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">사이드 조명 2개 켜기</div><div class="sub">벤치 아래, 책장 중간</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">환기 (창문 열기)</div></div></div>
-
-    <div class="sec-hd">필라테스 방</div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">슬리퍼 정리</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">환기 (창문 열기)</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">쓰레기통 비우기</div></div></div>
-
-    <div class="sec-hd">외국인 케어 방</div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">메인 조명 켜기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">사이드 조명 1개 켜기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">보일러 켜기</div><div class="sub">가장 안쪽 1번</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">라디에이터 켜기</div><div class="sub">계절에 맞춰서 사용</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">장판 켜기</div><div class="sub">예약 고객 수에 맞춰서 / 바닥부터 1번 베드</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">향 + 라이터 준비</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">배경음악 켜기</div><div class="sub">가야금 산조</div></div></div>
-
-    <div class="sec-hd">내국인 케어 방</div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">스탠드 조명 1개 켜기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">바닥 장판 켜기</div></div></div>
-
-    <div class="sec-hd">응대 준비</div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">대기실 + 필라테스 방 창문 닫기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">포트 물 채우고 끓이기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">찻주전자 준비</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">체크리스트 + 네임펜 준비</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">세션지 준비</div></div></div>
+  <div class="tab-row">
+    <button class="tab-btn active" onclick="showTab('open',this)">🌿 오픈</button>
+    <button class="tab-btn" onclick="showTab('guest',this)">🤍 응대</button>
+    <button class="tab-btn" onclick="showTab('close',this)">🌙 마감</button>
   </div>
 
-  <!-- ② 손님 응대 -->
-  <div class="phase">
-    <div class="phase-hd ph-guest">
-      <span>🤍 손님 응대</span>
-      <span class="ph-time">11:00 –</span>
+  <!-- ═══════ OPEN ═══════ -->
+  <div class="tab-panel active" id="tab-open">
+    <div class="phase">
+      <div class="phase-hd ph-open"><span>🌿 OPEN 준비</span><span style="font-size:11px;font-weight:400;opacity:.7">9:30 ~</span></div>
+      <div class="note">* 손님 오시기 전까지 순서 상관없이 진행</div>
+
+      <div class="sec-hd">대기실</div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">철문 열기</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">철문 앞쪽 노티스(자석 주의사항) 부착</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">조명 모두 켜기</div><div class="sub">메인 조명 + 간접 조명 등</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">환기 (창문 열기)</div></div></div>
+
+      <div class="sec-hd">외국인 케어 방 — <span class="season-tag st-winter">❄️ 겨울</span></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">보일러 켜기 (1번, 2번)</div><div class="sub">계절 온도에 따라 조절</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">라디에이터 켜기</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">장판 켜기</div><div class="sub">예약 고객 수에 맞춰서</div></div></div>
+
+      <div class="sec-hd">외국인 케어 방 — <span class="season-tag st-summer">☀️ 여름</span></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">창문형 에어컨 켜기 (20~23도)</div><div class="sub">에어컨 날개를 왼쪽으로 + 4번·3번 커튼 조금 열어놓기<br><span style="color:var(--coral);font-size:10px">⚠ 커튼이 닫혀있으면 바깥쪽까지 시원해지지 않고, 4번만 추워짐</span></div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">다이슨 선풍기 1단 — 유리문 방면 회전</div><div class="sub">1번·2번 베드 손님께 바람이 가도록</div></div></div>
+
+      <div class="sec-hd">외국인 케어 방 — 공통</div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">향 + 라이터 준비</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">배경음악 켜기</div><div class="sub">가야금 산조 버전</div></div></div>
+
+      <div class="sec-hd">내국인 방 <span class="badge">예약 있을 때만</span></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">내국인 방 오픈 준비</div><div class="sub"><span class="season-tag st-summer" style="margin:0">☀️ 여름</span> 창문형 에어컨 켜고 10도 왼쪽 기울임 + 하늘색 선풍기 대기실 방면<br><span style="margin-top:4px;display:inline-block">문 앞 서큘레이터 → 대기실 통하게 회전 1단 순환</span></div></div></div>
+
+      <div class="sec-hd">응대 준비</div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">대기실 + 필라테스 방 창문 닫기</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">포트 물 채우고 끓이기</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">찻주전자에 꽃 넣고 차 만들어 놓기</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">태블릿 체크리스트 앱 켜놓기</div><div class="sub">laurel-care 앱</div></div></div>
     </div>
+  </div>
 
-    <div class="sec-hd">① 인사</div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">인사하기</div>
-      <div class="sub">하이, 웰컴!</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">코트 받기 (들고 있는 상태로 앉히기)</div>
-      <div class="sub">아윌 행 유어 코트</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">자리 안내 후 코트 행거에 걸기</div>
-      <div class="sub">해브 어 싯</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">화장실 안내 <span class="badge">필요 시</span></div>
-      <div class="sub">위치 안내 + 화장실 휴지 챙겨드리기</div>
-    </div></div>
+  <!-- ═══════ GUEST ═══════ -->
+  <div class="tab-panel" id="tab-guest">
+    <div class="phase">
+      <div class="phase-hd ph-guest"><span>🤍 손님 응대</span></div>
 
-    <div class="sec-hd">② 차/물 드리기</div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">쟁반에 인원 수만큼 차 따라 서빙</div>
-      <div class="sub">디스 이즈 티</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">물 드리기 <span class="badge">요청 시</span></div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">빈 찻잔 수거 후 싱크대</div>
-    </div></div>
+      <div class="mind-card"><strong>🏨 마인드셋</strong> — 나는 세계적인 호텔의 오래된 지배인이다. 고객은 낯선 나라의 모르는 곳에 처음 왔다. 편안하게 있을 수 있도록 돕는 것이 나의 역할이다.</div>
 
-    <div class="sec-hd">③ 체크리스트</div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">국적 확인</div>
-      <div class="sub">웨얼 아 유 프롬?</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">국적에 맞는 체크리스트 + 네임펜 드리기</div>
-      <div class="sub">롸잇 유어 네임 앤드 이메일</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">이메일 스펠링 재확인 <span class="new">추가</span></div>
-      <div class="sub">고객이 쓴 이메일 아래에 한 글자씩 소리 내어 읽으며 다시 적기<br>예: u-n-e-h-a-n-a @ n-a-v-e-r .com</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">작성된 체크리스트 + 네임펜 수납장 위에 올리기</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">이메일 발송 안내 멘트 <span class="new">추가</span></div>
-      <div class="sub">
-        <span style="color:#1a1a1a;font-weight:500">한국어</span> — "오늘 사용하신 제품과 프리미엄 케어 루틴, 전문가 팁을 이 이메일로 보내드릴 거예요."<br>
-        <span style="color:#2a5fa8;font-weight:500">English</span> — 위 윌 샌드 더 프로덕트 유즈드 투데이, 유어 프리미엄 케어 루틴 앤드 엑스퍼트 팁 투 디스 이메일.
+      <div class="sec-hd">① 인사 + 자리 안내</div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">인사하기</div>
+        <div class="en-line">"Hi, welcome! Please come in."</div>
+        <div class="pron">하이, 웰컴! 플리즈 컴 인</div>
+      </div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">코트/가방 받기</div>
+        <div class="en-line">"I'll hang your coat."</div>
+        <div class="pron">아윌 행 유어 코트</div>
+        <div class="sub">⚠ 물건 만지는 걸 꺼리는 분도 있음 → 무리하지 말고 "OK!" 하고 자리 안내</div>
+      </div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">자리 안내 + 코트 행거에 걸기</div>
+        <div class="en-line">"Have a seat, please."</div>
+        <div class="pron">해브 어 싯, 플리즈</div>
+      </div></div>
+
+      <div class="talk-card">
+        <div class="tc-label">💬 긴장 풀어주기 — 스몰토크</div>
+        <div class="tc-en">"Welcome. I hope you had a nice trip here."</div>
+        <div class="tc-pron">웰컴. 아이 호프 유 해드 어 나이스 트립 히어</div>
+        <div class="tc-ko">오시는 길 괜찮으셨나요?</div>
+        <div class="tc-divider"></div>
+        <div class="tc-en">"Hongdae can feel a little confusing at first — glad you arrived safely."</div>
+        <div class="tc-pron">홍대 캔 필 어 리틀 컨퓨징 엣 퍼스트 — 글래드 유 어라이브드 세이플리</div>
+        <div class="tc-ko">홍대가 처음엔 복잡할 수 있는데, 잘 도착하셨네요!</div>
+        <div class="tc-divider"></div>
+        <div class="tc-en">"You must be a little tired from traveling."</div>
+        <div class="tc-pron">유 머스트 비 어 리틀 타이어드 프롬 트래블링</div>
+        <div class="tc-ko">여행하시느라 조금 피곤하시죠?</div>
+        <div class="tc-divider"></div>
+        <div class="tc-en">"Take your time and relax today."</div>
+        <div class="tc-pron">테이크 유어 타임 앤드 릴렉스 투데이</div>
+        <div class="tc-ko">오늘은 천천히 편하게 쉬다 가세요.</div>
       </div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">국적에 맞는 세션지 드리기</div>
-      <div class="sub">디스 이즈 투데이즈 세션</div>
-    </div></div>
 
-    <div class="sec-hd">④ 케어 대기 <span style="font-size:10px;font-weight:500;background:#fbeaf0;color:#a03060;border-radius:999px;padding:1px 8px;margin-left:6px;">전신업무 확인</span></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">신발 벗도록 안내</div>
-      <div class="sub">테이크 오프 유어 슈즈</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">베드 눕히기</div>
-      <div class="sub">라이 다운 / 1명 → 베드 1번(왼쪽) / 2명 이상 → 반복부터</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">담요 덮어드리기</div>
-      <div class="sub">플리즈 웨잇</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">안경 및 소지품 베개 옆 소쿠리에 넣어드리기</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">향 피우기</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">메인 조명 끄기 + 고객 신발 정리</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">마무리 팩 신호 → 3분 후 조명 켜기 <span class="new">추가</span></div>
-      <div class="sub">테라피스트가 마무리 팩 떼러 입장하면 타이머 3분 → 케어 룸 조명 ON<br><span style="font-size:11px;color:#aaa">(가능한 경우에 한함)</span></div>
-    </div></div>
+      <div class="sec-hd">② 차 드리기</div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">차받침과 차를 천천히 내어드리기</div>
+        <div class="en-line">"This is tea. Relax — today is your day."</div>
+        <div class="pron">디스 이즈 티. 릴렉스 — 투데이 이즈 유어 데이 ☆</div>
+        <div class="sub">급할 필요 없어요. 고객은 오늘을 즐기러 온 사람들이에요.</div>
+      </div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">추가 차 권유 <span class="badge">여유 있을 때</span></div>
+        <div class="en-line">"Would you like another cup of tea?"</div>
+        <div class="pron">우쥬 라이크 어나더 컵 오브 티?</div>
+      </div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">화장실 안내 <span class="badge">케어 전</span></div>
+        <div class="en-line">"Before we start, would you like to use the restroom?"</div>
+        <div class="pron">비포 위 스타트, 우쥬 라이크 투 유즈 더 레스트룸?</div>
+      </div></div>
+
+      <div class="sec-hd">③ 체크리스트 + 세션지</div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">국적 확인</div>
+        <div class="en-line">"Where are you from?"</div>
+        <div class="pron">웨얼 아 유 프롬?</div>
+      </div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">태블릿 체크리스트 드리기 (laurel-care)</div>
+        <div class="sub">고객 국적에 맞는 언어로 — 자국어를 보면 안도감을 느낌</div>
+      </div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">체크리스트 완료 → Case ID + 이름 메모</div>
+        <div class="sub">마지막 화면에 고객 ID가 나옴 → ID와 고객 특징/이름을 따로 메모<br>→ 이름으로 고객을 불러주면 좋아요</div>
+      </div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">국적에 맞는 세션지 드리기</div>
+        <div class="en-line">"This is today's session."</div>
+        <div class="pron">디스 이즈 투데이즈 세션</div>
+      </div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">세션 안내 멘트</div>
+        <div class="en-line">"This guide covers the basics. Every skin is different, so our therapists customize each treatment based on your skin condition. They're well trained — you're in great hands."</div>
+        <div class="pron">디스 가이드 커버스 더 베이직스. 에브리 스킨 이즈 디퍼런트, 쏘 아워 테라피스트 커스터마이즈 이치 트리트먼트 베이스드 온 유어 스킨 컨디션. 데이아 웰 트레인드 — 유어 인 그레이트 핸즈.</div>
+        <div class="sub">고객에게 안심감을 주는 멘트</div>
+      </div></div>
+
+      <div class="sec-hd">④ 케어 대기 + 케어 후</div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">고객이 케어룸에 들어간 후 정리</div>
+        <div class="sub">신발 정리, 찻잔 정리, 세션지 정리 — 급할 필요 없음</div>
+      </div></div>
+
+      <div class="mind-card"><strong>⏱ 시간 관리</strong> — 케어룸에서 모델링팩(하늘색 고무팩)이 올라가 있다면 10분 이내로 마무리됨. 항상 시간 체크!</div>
+
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">대기 중 고객 응대 <span class="badge">대기 길어질 때</span></div>
+        <div class="en-line">"Please make yourself comfortable. We're preparing a relaxing treatment just for you."</div>
+        <div class="pron">플리즈 메이크 유어셀프 컴포터블. 위아 프리페어링 어 릴렉싱 트리트먼트 저스트 포 유.</div>
+        <div class="sub">급한 모습 절대 금지. 호텔 지배인처럼 여유있게.</div>
+      </div></div>
+
+      <div class="talk-card">
+        <div class="tc-label">💬 대기가 길어질 때</div>
+        <div class="tc-en">"Your moment of rest is almost ready. Please enjoy a quiet moment with the Seoul view."</div>
+        <div class="tc-pron">유어 모먼트 오브 레스트 이즈 올모스트 레디. 플리즈 인조이 어 콰이엇 모먼트 위드 더 서울 뷰.</div>
+        <div class="tc-ko">곧 준비됩니다. 서울 풍경과 함께 잠시 쉬어주세요.</div>
+        <div class="tc-divider"></div>
+        <div class="tc-en">"No need to rush. Your moment of rest starts now."</div>
+        <div class="tc-pron">노 니드 투 러쉬. 유어 모먼트 오브 레스트 스타츠 나우.</div>
+        <div class="tc-ko">서두르지 않으셔도 돼요. 휴식은 지금부터예요.</div>
+      </div>
+
+      <div class="mind-card"><strong>👥 뒤에 고객이 기다린다면</strong> — 새 고객에게 먼저 다정하게 인사 → 앉히기 → "잠시만요" → 이전 찻잔 옆에 숨김 → 차 한잔 먼저 드리기 → 그 후 정리. 사람을 먼저 우선시하는 것이 프로페셔널.</div>
+
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">케어 후 고객 맞이</div>
+        <div class="en-line">"You look so refreshed! Your skin looks healthy and glowing."</div>
+        <div class="pron">유 룩 쏘 리프레시드! 유어 스킨 룩스 헬시 앤드 글로잉.</div>
+      </div></div>
+
+      <div class="talk-card">
+        <div class="tc-label">💬 케어 후 칭찬 (장난섞어도 OK)</div>
+        <div class="tc-en">"Are you sure you're not an angel?"</div>
+        <div class="tc-pron">아 유 슈어 유어 낫 앤 엔젤?</div>
+        <div class="tc-ko">혹시 천사 아니세요? 😄</div>
+        <div class="tc-divider"></div>
+        <div class="tc-en">"Wow… you look absolutely heavenly right now."</div>
+        <div class="tc-pron">와우… 유 룩 앱솔루틀리 헤븐리 라잇 나우.</div>
+        <div class="tc-ko">지금 정말 천사 같으세요.</div>
+      </div>
+
+      <div class="sec-hd">⑤ 결제</div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">결제 안내</div>
+        <div class="en-line">"Whenever you're ready, I can help you with the payment."</div>
+        <div class="pron">웬에버 유어 레디, 아이 캔 헬프 유 위드 더 페이먼트.</div>
+      </div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">개별/합산 결제 확인</div>
+        <div class="en-line">"Would you like to pay separately or together?"</div>
+        <div class="pron">우쥬 라이크 투 페이 세퍼릿리 오어 투게더?</div>
+      </div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">금액 안내 + 할인 적용 시</div>
+        <div class="en-line">"It's __ dollars. Each person receives a 5-dollar discount."</div>
+        <div class="pron">잇츠 __ 달러스. 이치 퍼슨 리시브즈 어 파이브 달러 디스카운트.</div>
+      </div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
+        <div class="lbl">결제 완료</div>
+        <div class="en-line">"Your payment has been completed. Thank you."</div>
+        <div class="pron">유어 페이먼트 해즈 빈 컴플리티드. 땡큐.</div>
+      </div></div>
+    </div>
   </div>
 
-  <!-- ③ 마감 정리 -->
-  <div class="phase">
-    <div class="phase-hd ph-close">
-      <span>🌙 마감 정리</span>
-      <span class="ph-time">17:00 –</span>
+  <!-- ═══════ CLOSE ═══════ -->
+  <div class="tab-panel" id="tab-close">
+    <div class="phase">
+      <div class="phase-hd ph-close"><span>🌙 마감 정리</span></div>
+      <div class="note">* 더러워 보이는 것은 그때그때. 고객이 앉는 자리, 찻잔, 눈 위치에서 먼지·더러움 없게.</div>
+
+      <div class="sec-hd">대기실</div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">찻주전자 설거지</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">찻잔 정리</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">러그 먼지 털기</div></div></div>
+
+      <div class="sec-hd">외국인 케어 방</div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">조명 모두 끄기</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">배경음악 끄기</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">보일러 / 라디에이터 / 냉방기기 전원 OFF</div><div class="sub"><span style="color:var(--coral);font-size:10px">⚠ 오래된 건물 — 전압 약해 정전 위험. 반드시 확인!</span></div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">장판 끄기</div></div></div>
+
+      <div class="sec-hd">베드 정리</div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">담요 정리</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">베드 먼지 닦기</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">섬유탈취제 뿌리기</div></div></div>
+
+      <div class="sec-hd">마무리</div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">쓰레기통 비우기</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">향 받침대 닦기</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">고무볼 + 스파튤라 닦기</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">포트기 코드 뽑기</div><div class="sub"><span style="color:var(--coral);font-size:10px">⚠ 화재 원인 — 반드시 뽑을 것!</span></div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">전자기기 배터리 확인 → 70% 이하면 충전</div><div class="sub">아이패드, 갤럭시탭 등</div></div></div>
+      <div class="item" onclick="t(this)"><div class="cb"><svg class="svg-ck ck" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">모든 조명 OFF</div></div></div>
     </div>
-    <div class="note">* 순서는 편하게 해도 됩니다</div>
-
-    <div class="sec-hd">대기실</div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">찻주전자 설거지</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">찻잔 냉장고 정리</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">러그 먼지 털기</div>
-      <div class="sub">외국인 케어 방 앞 러그 / 냉장고 위 물티슈</div>
-    </div></div>
-
-    <div class="sec-hd">외국인 케어 방</div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">메인 조명 끄기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">배경음악 끄기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">아이패드 + 갤럭시 탭 충전 꽂기 <span class="badge">필요 시</span></div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">보일러 끄기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">라디에이터 끄기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">장판 끄기</div></div></div>
-
-    <div class="sec-hd">베드 정리</div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">담요 정리</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">베드 먼지 닦기</div>
-      <div class="sub">냉장고 위 물티슈</div>
-    </div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">섬유탈취제 뿌리기</div>
-      <div class="sub">냉장고 위</div>
-    </div></div>
-
-    <div class="sec-hd">마무리</div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">쓰레기통 비우기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">향 방침대 닫기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="lbl">고무볼 + 스파튤라 닫기</div></div></div>
-    <div class="item" onclick="t(this)"><div class="cb"><svg class="ck" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div>
-      <div class="lbl">아세톤으로 닦고 제자리에 놓기 <span class="new">추가</span></div>
-      <div class="sub">⚠ 아세톤 있는 위치의 도구만 해당</div>
-    </div></div>
   </div>
 
 </div>
@@ -239,19 +316,27 @@
 <script>
 function t(el){el.classList.toggle('done');upd()}
 function upd(){
-  const all=document.querySelectorAll('.item').length;
-  const done=document.querySelectorAll('.item.done').length;
-  document.getElementById('pf').style.width=(done/all*100)+'%';
-  document.getElementById('pl').textContent=done+' / '+all+' 완료';
+  const panel=document.querySelector('.tab-panel.active');
+  const all=panel.querySelectorAll('.item').length;
+  const done=panel.querySelectorAll('.item.done').length;
+  document.getElementById('pf').style.width=all?(done/all*100)+'%':'0%';
+  document.getElementById('pl').textContent=done+' / '+all;
 }
 function resetAll(){
-  document.querySelectorAll('.item.done').forEach(e=>e.classList.remove('done'));
+  if(!confirm('현재 탭 체크를 초기화할까요?'))return;
+  document.querySelector('.tab-panel.active').querySelectorAll('.item.done').forEach(e=>e.classList.remove('done'));
+  upd();
+}
+function showTab(id,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
   upd();
 }
 const d=new Date();
 const days=['일','월','화','수','목','금','토'];
-document.getElementById('today-date').textContent=
-  d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')+' ('+days[d.getDay()]+')';
+document.getElementById('today-date').textContent=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')+' ('+days[d.getDay()]+')';
 upd();
 </script>
 </body>
